@@ -1,0 +1,7 @@
+{
+  "name": "CheMiServe",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
