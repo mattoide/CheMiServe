@@ -1,0 +1,28 @@
+
+<ion-card>
+  <ion-card-header>
+    <ion-item>
+        <ion-icon [name]="prod.icon" slot="start"></ion-icon>
+        <ion-card-title>{{prod.name | uppercase}}</ion-card-title>
+    </ion-item>
+  </ion-card-header>
+
+  <ion-item style="float: right;">
+
+      <!-- <ion-label>Unità</ion-label> -->
+      <ion-select placeholder="Seleziona unità di misura" value={{prod.measureUnit}} (ionChange)="updateMeasureUnit($event)">
+        <ion-select-option value="single">Singolo</ion-select-option>
+        <ion-select-option value="package">Pacco</ion-select-option>
+      </ion-select>
+    <button (click)="removeQuantity()"><ion-icon name="remove-circle-outline"></ion-icon></button>
+
+       {{ prod.quantity  ? prod.quantity : 0}}
+
+    <button (click)="addQuantity()"><ion-icon name="add-circle-outline"></ion-icon></button>
+  </ion-item>
+
+  <ion-card-content>
+   {{prod.description}}
+  </ion-card-content>
+  
+</ion-card>
