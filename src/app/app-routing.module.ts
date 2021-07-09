@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AddComponent } from './add/add.component';
 import { DetailsComponent } from './details/details.component';
 import { ListComponent } from './list/list.component';
 
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'details',
     component: DetailsComponent
+  },  
+  {
+    path: 'add',
+    component: AddComponent
   },
   {
     path: '',

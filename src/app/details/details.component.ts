@@ -13,6 +13,7 @@ import { Type } from '../models/type';
 export class DetailsComponent implements OnInit {
 
   @Input() product: Product
+  @Input() limit: number
   @Output() updateProduct  = new EventEmitter();
 
   prod: Product
@@ -23,7 +24,7 @@ export class DetailsComponent implements OnInit {
     this.prod = {...this.product}
   }
 
-  updateMeasureUnit(evt: CustomEvent){
+  updateMeasureUnit(evt){
 
     this.prod.measureUnit = evt.detail.value;
     this.updateProduct.emit(this.prod)

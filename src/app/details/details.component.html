@@ -1,5 +1,5 @@
 
-<ion-card>
+<ion-card style="border: 1px solid red;">
   <ion-card-header>
     <ion-item>
         <ion-icon [name]="prod.icon" slot="start"></ion-icon>
@@ -10,7 +10,7 @@
   <ion-item style="float: right;">
 
       <!-- <ion-label>Unità</ion-label> -->
-      <ion-select placeholder="Seleziona unità di misura" value={{prod.measureUnit}} (ionChange)="updateMeasureUnit($event)">
+      <ion-select cancelText="Annulla" interface="popover" placeholder="Seleziona unità di misura" value={{prod.measureUnit}} (ionChange)="updateMeasureUnit($event)">
         <ion-select-option value="single">Singolo</ion-select-option>
         <ion-select-option value="package">Pacco</ion-select-option>
       </ion-select>
