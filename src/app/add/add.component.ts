@@ -3,7 +3,12 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Icon } from '../models/icon';
 import { Type } from '../models/type';
-import { ProjectService } from '../services/project.service';
+import { ProductService } from '../services/project.service';
+import { switchMap, tap, catchError } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
+import { ToastController } from '@ionic/angular';
+
+
 
 
 @Component({
@@ -22,23 +27,55 @@ export class AddComponent implements OnInit {
     icon: ['', Validators.required]
   })
 
+  alreadyExist = false
+
   constructor(
     private fb: FormBuilder,
-    private projectsService: ProjectService,
-    private router: Router
-    ) { }
+    private productService: ProductService,
+    private router: Router,
+    public toastController: ToastController
+  ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+
+  }
+
+  async presentToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000,
+      position: 'middle'
+    });
+    toast.present();
+  }
 
   onSubmit() {
 
-   
-    this.projectsService.addProduct(this.form.value).subscribe(val =>{
-      console.log(val);
+    if (!this.form.valid) {
+      this.form.markAllAsTouched()
+      this.presentToast("Inserisci almeno i campi obbligatori")
+      return
+    }
+
+    this.productService.checkIfProductExist(this.form.controls.name.value).pipe(
+
+      catchError(error => {
+
+        this.alreadyExist = true
+        this.presentToast(error)
+        return throwError(error);
+
+
+      }),
+      switchMap(() => this.productService.addProduct(this.form.value))
+
+    ).subscribe((data) => {
+      console.log(data);
+
       this.router.navigate(['/home'])
-      
-    });
-    
+    })
+
 
   }
 
@@ -66,21 +103,21 @@ export class AddComponent implements OnInit {
   }
 
 
-  addQuantity(){
+  addQuantity() {
 
-    let qty =  this.form.controls.quantity.value
+    let qty = this.form.controls.quantity.value
     qty++
-    
+
     this.form.patchValue({ quantity: qty })
-    
-  } 
 
-   removeQuantity(){
+  }
 
-    let qty =  this.form.controls.quantity.value
+  removeQuantity() {
+
+    let qty = this.form.controls.quantity.value
     qty < 1 ? null : qty--
-    
-   // this.form.patchValue({ quantity:qty })
+
+    // this.form.patchValue({ quantity:qty })
   }
 
 }

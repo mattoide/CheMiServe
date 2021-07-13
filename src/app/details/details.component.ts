@@ -15,6 +15,7 @@ export class DetailsComponent implements OnInit {
   @Input() product: Product
   @Input() limit: number
   @Output() updateProduct  = new EventEmitter();
+  @Output() deleteProduct  = new EventEmitter();
 
   prod: Product
 
@@ -38,6 +39,10 @@ export class DetailsComponent implements OnInit {
    removeQuantity(){
     this.prod.quantity < 1 ? null : this.prod.quantity--
     this.updateProduct.emit(this.prod)
+  }
+
+  deleteProd(){
+    this.deleteProduct.emit(this.prod)
   }
 
 }

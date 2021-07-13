@@ -1,25 +1,55 @@
 
-<ion-card style="border: 1px solid red;">
+<ion-card [ngClass]="prod.quantity < limit ? 'warning' : null">
+
+
   <ion-card-header>
     <ion-item>
+     <ion-icon (click)="deleteProd()" name="trash" slot="end" style="cursor: pointer; color: red;"></ion-icon>
+
         <ion-icon [name]="prod.icon" slot="start"></ion-icon>
         <ion-card-title>{{prod.name | uppercase}}</ion-card-title>
     </ion-item>
   </ion-card-header>
 
-  <ion-item style="float: right;">
+  <ion-row>
+<ion-col size="8" >
+  <ion-item>
+  <ion-label>Unità</ion-label>
+  <ion-select cancelText="Annulla" interface="popover" placeholder="..." value={{prod.measureUnit}} (ionChange)="updateMeasureUnit($event)">
+    <ion-select-option value="single">Singolo</ion-select-option>
+    <ion-select-option value="package">Pacco</ion-select-option>
+  </ion-select>
+</ion-item>
+</ion-col>
 
-      <!-- <ion-label>Unità</ion-label> -->
+<ion-col>
+  <ion-item>
+
+  <ion-icon (click)="removeQuantity()" name="remove-circle-outline"   style="cursor: pointer; color: red;"></ion-icon>
+
+  {{ prod.quantity  ? prod.quantity : 0}}
+
+<ion-icon  (click)="addQuantity()" name="add-circle-outline"  style="cursor: pointer; color: green;"></ion-icon>
+</ion-item>
+
+</ion-col>
+  </ion-row>
+  <!-- <ion-item >
+    <ion-label>Unità</ion-label>
       <ion-select cancelText="Annulla" interface="popover" placeholder="Seleziona unità di misura" value={{prod.measureUnit}} (ionChange)="updateMeasureUnit($event)">
         <ion-select-option value="single">Singolo</ion-select-option>
         <ion-select-option value="package">Pacco</ion-select-option>
       </ion-select>
-    <button (click)="removeQuantity()"><ion-icon name="remove-circle-outline"></ion-icon></button>
+    </ion-item>
 
-       {{ prod.quantity  ? prod.quantity : 0}}
+    <ion-item style="float: right;">
+        <ion-icon (click)="removeQuantity()" name="remove-circle-outline"   style="cursor: pointer; color: red;"></ion-icon>
 
-    <button (click)="addQuantity()"><ion-icon name="add-circle-outline"></ion-icon></button>
-  </ion-item>
+      {{ prod.quantity  ? prod.quantity : 0}}
+
+    <ion-icon  (click)="addQuantity()" name="add-circle-outline"  style="cursor: pointer; color: green;"></ion-icon>
+  </ion-item> -->
+
 
   <ion-card-content>
    {{prod.description}}

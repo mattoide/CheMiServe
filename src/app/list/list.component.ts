@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Icon } from '../models/icon';
-import { Type } from '../models/type';
 import { Product } from '../models/product.model';
-import { Unit } from '../models/unit';
-import { ProjectService } from '../services/project.service';
+import { ProductService } from '../services/project.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -14,46 +11,149 @@ import { ActivatedRoute } from '@angular/router';
 export class ListComponent implements OnInit {
 
   products: Product[];
-  limit: number = 5
+  limit: number = 0
+  defaultSorting = "quantity"
 
   constructor(
-    private projectService: ProjectService,
+    private productService: ProductService,
     private activatedRoute: ActivatedRoute
   ) {
+
+    this.limit =  Number(localStorage.getItem("limit"))
+    if(!this.limit)
+    localStorage.setItem("limit",this.limit.toString())
+
+
+
     activatedRoute.params.subscribe(val => {
-      this.projectService.getProducts().subscribe(products =>{
+      this.productService.getProducts().subscribe(products => {
         this.products = products
+        this.sortBy(this.defaultSorting)
       })
-        
+
     });
   }
-   
+
 
   ngOnInit() {
 
-    // this.products = [
-    //   {id: "ascasd",name: "uova", icon: Icon.eat, quantity: 5, measureUnit: Unit.package, description: "carbonarta?", type: Type.eat},
-    //   {id: "45f4", name: "latte", icon: Icon.drink, quantity: 2, measureUnit: Unit.single, description: "", type: Type.drink},
-    //   {id: "ssds",name: "pasta", icon: Icon.eat, quantity: 1, description: "lunga", type: Type.eat},
-      
-    // ]
-     this.projectService.getProducts().subscribe(products =>{
+    this.productService.getProducts().subscribe(products => {
       this.products = products
+      this.sortBy(this.defaultSorting)
     })
 
   }
 
-  updateProduct(product:Product){
-    
-    this.products.filter(p => p.id == product.id ).map(p =>{
+  updateProduct(product: Product) {
+
+    //need for local sorting
+    this.products.filter(p => p.name == product.name).map(p => {
+
+      // console.log(p);
+
       p.name = product.name
       p.description = product.description
       p.quantity = product.quantity
       p.measureUnit = product.measureUnit
       p.type = product.type
-    })   
+    })
 
+    this.productService.updateProduct(product).subscribe(data => {
+
+      //evito il refresh ;))))
+      // this.products = data
+
+    })
+
+
+  }
+
+  deleteProduct(product: Product) {
+    this.productService.deleteProduct(product).subscribe(data => {
+      this.products = data
+    })
+  }
+
+  sortBy(evt) {
+
+    let sorting
+
+    if (typeof evt == "string") {
+      sorting = evt
+    } else {
+      sorting = evt.detail.value
+    }
+
+    switch (sorting) {
+
+      case "quantity":
+
+        this.products.sort(function (a, b) {
+          return a.quantity - b.quantity;
+        });
+
+        break;
+
+      case "name":
+
+        this.products.sort(function (a, b) {
+
+          var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+          var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+
+          // names must be equal
+          return 0;
+        });
+
+        break;
+
+        case "type":
+
+          this.products.sort(function (a, b) {
+
+            var nameA = a.type.toUpperCase(); // ignore upper and lowercase
+            var nameB = b.type.toUpperCase(); // ignore upper and lowercase
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+  
+            // names must be equal
+            return 0;
+          });
+          
+          break;
+
+      default:
+        break;
+    }
+
+  }
+
+  refresh(evt){
+    this.sortBy(this.defaultSorting)
+    evt.target.complete();
+  }
+
+  setLimit(){
+    localStorage.setItem("limit",this.limit.toString())
     
   }
+  increaseLimit(){
+    this.limit++
+  }
+
+  decreaseLimit(){
+    this.limit < 1 ? null : this.limit--
+  }
+
 
 }

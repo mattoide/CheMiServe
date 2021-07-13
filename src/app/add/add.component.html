@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <ion-card> 
+  <ion-card [style]="alreadyExist ? 'border: 1px solid red' : null"> 
     <ion-card-header>
       <ion-item>
 
@@ -12,29 +12,31 @@
 
       <ion-item>
           <ion-icon [name]="form.controls.icon?.value" slot="start"></ion-icon>
-          <ion-card-title><ion-input placeholder="Nome prodotto" formControlName="name"></ion-input></ion-card-title>
-
+          <ion-card-title [style]="alreadyExist ? 'border: 1px solid red;' : null"><ion-input placeholder="Nome prodotto" formControlName="name"></ion-input></ion-card-title>
       </ion-item>
     </ion-card-header>
    
-    <ion-item style="float: right;">
+    <ion-item>
       
-      <ion-item>
+      <!-- <ion-item>
         <ion-label>Unità</ion-label>
-      </ion-item>
+      </ion-item> -->
 
-      <ion-item>
-        <ion-select cancelText="Annulla" interface="popover" placeholder="Seleziona unità di misura" [value]=form.controls.measureUnit.value formControlName="measureUnit">
+      <!-- <ion-item> -->
+        <ion-label>Unità</ion-label>
+
+        <ion-select cancelText="Annulla" interface="popover" placeholder="Seleziona unità di misura..." [value]=form.controls.measureUnit.value formControlName="measureUnit">
+          Unità
           <ion-select-option value="single">Singolo</ion-select-option>
           <ion-select-option value="package">Pacco</ion-select-option>
         </ion-select>
-      </ion-item>
+      <!-- </ion-item> -->
 
       <button (click)="removeQuantity()" type="button" ><ion-icon name="remove-circle-outline"></ion-icon></button>
   
-      <ion-item>
+      <!-- <ion-item> -->
          <ion-input formControlName="quantity" type="number" min="0" [value]="form.controls.quantity.value"> </ion-input>
-      </ion-item>
+      <!-- </ion-item> -->
 
       <button (click)="addQuantity()" type="button"><ion-icon name="add-circle-outline"></ion-icon></button>
     </ion-item>
@@ -45,8 +47,15 @@
   </ion-card>
 
   <ion-fab  vertical="bottom" horizontal="center" slot="fixed" >
-    <ion-fab-button [disabled]="form.status != 'VALID'">
-      <ion-icon (click)="onSubmit()" name="add"></ion-icon>
+    <!-- <ion-fab-button [disabled]="form.status != 'VALID'"> -->
+      <ion-fab-button>
+        <ion-icon (click)="onSubmit()" name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab [routerLink]="['/home']" vertical="bottom" horizontal="start" slot="fixed" >
+    <ion-fab-button>
+      <ion-icon  name="home" ></ion-icon>
     </ion-fab-button>
   </ion-fab>
 

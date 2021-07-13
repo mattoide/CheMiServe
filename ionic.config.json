@@ -1,7 +1,8 @@
 {
   "name": "CheMiServe",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }
