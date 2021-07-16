@@ -1,10 +1,10 @@
 <ng-container *ngIf="products?.length else noProducts" >
 
+<ng-container *ngIf="showTopInfo">
   <ion-row>
 
     <ion-col>
-
-      <ion-item>
+      <ion-item color="">
       <ion-label >Limite attenzione</ion-label>
     </ion-item>
 
@@ -15,7 +15,7 @@
       <ion-item>
         <ion-icon (click)="decreaseLimit()" name="remove-circle-outline" slot="end" style="cursor: pointer; color: red;"></ion-icon>
 
-        <ion-input slot="end" style="float: right;" [value]="limit" min=0 [(ngModel)]="limit" (ngModelChange)="setLimit()" type="number"></ion-input>
+        <ion-input  style="float: right;" [value]="limit" min=0 [(ngModel)]="limit" (ngModelChange)="setLimit()"  type="number"></ion-input>
 
       <ion-icon  (click)="increaseLimit()" name="add-circle-outline"   slot="end"  style="cursor: pointer; color: green;"></ion-icon>
       </ion-item>
@@ -31,7 +31,7 @@
     <ion-row style="justify-content: center; margin: 2%;">
       
       <ion-col size="12" size-sm size-md>
-        <ion-item>
+        <ion-item lines="none">
         <ion-label>Ordina per</ion-label>
       </ion-item>
       </ion-col>
@@ -69,14 +69,23 @@
   </ion-radio-group>
 
 
-    <ion-item-divider></ion-item-divider>
+  <ion-item-divider></ion-item-divider>
+
+</ng-container>
+
+<ion-row  style="justify-content: center; margin: 2%;">
+  <ion-item (click)="showTopInfoF()" lines="none"> <ion-icon [name]="!showTopInfo ? 'arrow-down-circle' : 'arrow-up-circle'" style="cursor: pointer;" letvar="show"></ion-icon> 
+    <span *ngIf="!showTopInfo"> Espandi...</span>
+    <span *ngIf="showTopInfo"> Nascondi...</span>
+  </ion-item>
+</ion-row>
   <!-- </ion-grid> -->
 
   <ion-content
   [scrollEvents]="true"
 >
   <ion-list>
-      <app-details  *ngFor="let prod of products" [product]="prod" [limit]="limit" (updateProduct)="updateProduct($event)" (deleteProduct)="deleteProduct($event)"></app-details>
+      <app-details *ngFor="let prod of products" [product]="prod" [limit]="limit" (updateProduct)="updateProduct($event)" (deleteProduct)="deleteProduct($event)"></app-details>
   </ion-list>
 
 

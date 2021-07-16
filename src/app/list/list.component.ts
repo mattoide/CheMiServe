@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../models/product.model';
 import { ProductService } from '../services/project.service';
 import { ActivatedRoute } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-list',
@@ -13,15 +14,21 @@ export class ListComponent implements OnInit {
   products: Product[];
   limit: number = 0
   defaultSorting = "quantity"
+  showTopInfo = false
 
   constructor(
     private productService: ProductService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private menu: MenuController
   ) {
 
     this.limit =  Number(localStorage.getItem("limit"))
-    if(!this.limit)
-    localStorage.setItem("limit",this.limit.toString())
+    if(!this.limit){
+
+       this.limit = 0
+      localStorage.setItem("limit",this.limit.toString())
+
+    }
 
 
 
@@ -144,15 +151,23 @@ export class ListComponent implements OnInit {
   }
 
   setLimit(){
+    if(this.limit != 0)
     localStorage.setItem("limit",this.limit.toString())
     
   }
   increaseLimit(){
     this.limit++
+    this.setLimit()
   }
 
   decreaseLimit(){
     this.limit < 1 ? null : this.limit--
+    this.setLimit()
+
+  }
+
+  showTopInfoF(){
+      this.showTopInfo = !this.showTopInfo
   }
 
 

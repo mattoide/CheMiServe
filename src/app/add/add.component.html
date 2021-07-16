@@ -3,7 +3,7 @@
     <ion-card-header>
       <ion-item>
 
-        <ion-select cancelText="Annulla" placeholder="Tipo" [value]=form.controls.type.value formControlName="type"  (ionChange)="selectIcon($event)">
+        <ion-select cancelText="Annulla" placeholder="Tipo" mode="md" interface="popover" [value]=form.controls.type.value formControlName="type"  (ionChange)="selectIcon($event)">
           <ion-select-option value="eat">Cibo</ion-select-option>
           <ion-select-option value="drink">Bevanda</ion-select-option>
           <ion-select-option value="seasoning">Condimento</ion-select-option>

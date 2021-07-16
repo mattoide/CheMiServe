@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'CheMiServe',
+  appId: 'com.matto.listaspesa',
+  appName: 'ListaSpesa',
   webDir: 'www',
   bundledWebRuntime: false
 };
